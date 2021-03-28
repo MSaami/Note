@@ -1,5 +1,7 @@
 module Authentication
   class TokenCreator < ApplicationService
+    include JwtConfig
+
     def initialize(user_id)
       @user_id = user_id
     end
@@ -17,12 +19,5 @@ module Authentication
       }
     end
 
-    def get_secret_key
-      Rails.application.secrets.secret_key_base
-    end
-
-    def get_algorithm
-      Rails.configuration.jwt[:algorithm]
-    end
   end
 end
