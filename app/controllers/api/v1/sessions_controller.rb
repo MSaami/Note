@@ -1,6 +1,8 @@
 module Api
   module V1
     class SessionsController < BaseController
+      skip_before_action :authenticate_user
+
       def create
         user = User.find_by_email(permit_params[:email])
         &.authenticate(permit_params[:password])
