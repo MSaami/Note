@@ -1,0 +1,10 @@
+development: &development
+  :expire_time: 7200
+  :algorithm: 'HS256'
+
+test:
+  <<: *development
+
+production:
+  <<: *development
+
