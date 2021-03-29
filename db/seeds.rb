@@ -5,3 +5,8 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+user = FactoryBot.create(:user, email: 'test@gmail.com', password: '123456')
+FactoryBot.create_list(:note,5, user: user)
+folder = FactoryBot.create(:folder, name: 'Tech', user: user)
+FactoryBot.create_list(:note, 8, folder: folder, user: user)
