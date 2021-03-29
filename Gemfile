@@ -27,6 +27,9 @@ gem 'bootsnap', '>= 1.4.4', require: false
 
 gem 'jwt'
 gem 'fast_jsonapi'
+gem 'aws-sdk-s3', '~> 1'
+gem 'aws-sdk-ec2', '~> 1'
+gem 'sorted_set' #It's beacuse of changes in ruby 3
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
