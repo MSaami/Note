@@ -1,3 +1,4 @@
 namespace :v1 do
-  resource :sessions, only: [:create]
+  resources :sessions, only: [:create]
+  resources :folders, only: [:index, :create]
 end
