@@ -7,6 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 user = FactoryBot.create(:user, email: 'test@gmail.com', password: '123456')
-FactoryBot.create_list(:note,5, user: user)
+default_folder = FactoryBot.create(:folder, name: 'default', user: user)
+FactoryBot.create_list(:note,5, user: user, folder: default_folder)
 folder = FactoryBot.create(:folder, name: 'Tech', user: user)
 FactoryBot.create_list(:note, 8, folder: folder, user: user)
