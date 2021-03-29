@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 2021_03_28_185158) do
 
   create_table "notes", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.integer "folder_id"
+    t.integer "folder_id", null: false
     t.text "body", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
