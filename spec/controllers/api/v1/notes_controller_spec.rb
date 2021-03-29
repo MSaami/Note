@@ -24,12 +24,25 @@ RSpec.describe Api::V1::NotesController, type: :controller do
         expect(user.notes.count).to eq(1)
       end
 
+      it "creates note with file" do
+        file = fixture_file_upload('video.mp4')
+        post :create, params: {note: {body: 'With File', file: file}}
+        expect(response).to have_http_status(:created)
+        expect(Note.find_by_body('With File').file.attached?).to be true
+      end
+
       describe '#index' do
+        let!(:notes) {FactoryBot.create_list(:note, 5, user: user)}
         it "returns notes from user if token is valid" do
-          FactoryBot.create_list(:note, 25, user: user)
           get :index
           body = JSON.parse(response.body)
-          expect(body['data'].count).to eq(25)
+          expect(body['data'].count).to eq(notes.count)
+        end
+
+        it "returns notes from user with files" do
+          get :index
+          body = JSON.parse(response.body)
+          expect(body['data'].first['attributes']['file_url']).not_to be_empty
         end
       end
 
@@ -52,6 +65,18 @@ RSpec.describe Api::V1::NotesController, type: :controller do
         it "user get unprocessable_entity status if folder is invalid" do
           put :update, params: {id: note.id, note: {body: 'Update With invalid folder', folder_id: 2334344}}
           expect(response).to have_http_status(:unprocessable_entity)
+        end
+
+        it "user can update the file" do
+          last_file_url = note.file_url
+          image = fixture_file_upload('image.png')
+          put :update, params: {id: note.id, note: {file: image}}
+          expect(note.reload.file_url).not_to eq(last_file_url)
+        end
+
+        it "return 404 status if note id is invalid" do
+          put :update, params: {id: 1111111, note: {body: 'After'}}
+          expect(response).to have_http_status(:not_found)
         end
       end
 
