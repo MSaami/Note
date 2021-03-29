@@ -25,6 +25,10 @@ Because of that the amazon's config in `storage.yml` is diffrent than usual.
 - run `fakes3 -r /tmp/fakes3_root -p 4567 --license 5101872469`
 
 
+## API Document
+
+Postman collection has been uploaded into root project that you can import it to your postman.
+
 ## Credential
 `email`: `test@gmail.com`  
 `password`: `123456`
