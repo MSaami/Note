@@ -6,8 +6,8 @@ This is Note application that you can store your note on that, also you can atta
 
 - after clone the project run `bundle install`
 - run `bin/rails db:migrate RAILS_ENV=development`
-- run `db:seed` to prepare data
-- run `rails server`
+- run `bin/rails db:seed` to prepare data
+- run `bin/rails server`
 
 ### Note
 Active storage stores files in local driver, For changing driver to Amazon S3 you can change `development.rb` like below.  
