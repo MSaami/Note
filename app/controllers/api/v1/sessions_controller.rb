@@ -3,10 +3,9 @@ module Api::V1
       skip_before_action :authenticate_user
 
       def create
-        user = User.find_by_email(permit_params[:email])
-        &.authenticate(permit_params[:password])
-        raise AuthenticationError unless user
-        token = Authentication::TokenCreator.call(user.id)
+        auth = Authentication::UserAuthentication.new(permit_params)
+        raise AuthenticationError unless auth.authenticated?
+        token = Authentication::TokenCreator.call(auth.user.id)
         render json: { token: token }, status: :created
       end
 
