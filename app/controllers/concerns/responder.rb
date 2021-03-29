@@ -2,12 +2,12 @@ module Responder
   extend ActiveSupport::Concern
 
   included do
-    class AuthenticationError < StandardError; end
     rescue_from ActionController::ParameterMissing, with: :parameter_missing
-    rescue_from AuthenticationError, with: :unauthorized
     rescue_from JWT::VerificationError, with: :unauthorized
     rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
     rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
+    rescue_from AuthorizationError, with: :forbidden
+    rescue_from AuthenticationError, with: :unauthorized
   end
 
   def parameter_missing(e)
@@ -23,6 +23,10 @@ module Responder
   end
 
   def record_not_found
-    render json: { errors: 'Record not found' }, status: :not_found
+    render json: { error: 'Record not found' }, status: :not_found
+  end
+
+  def forbidden
+    render json: { error: 'Forbidden'}, status: :forbidden
   end
 end

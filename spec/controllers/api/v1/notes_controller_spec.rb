@@ -31,6 +31,12 @@ RSpec.describe Api::V1::NotesController, type: :controller do
         expect(Note.find_by_body('With File').file.attached?).to be true
       end
 
+      it "user cannot put note to other's folders" do
+        folder = FactoryBot.create(:folder, user: FactoryBot.create(:user))
+        post :create, params: {note: {body: 'For other folder', folder_id: folder.id}}
+        expect(response).to have_http_status(:forbidden)
+      end
+
       describe '#index' do
         let!(:notes) {FactoryBot.create_list(:note, 5, user: user)}
         it "returns notes from user if token is valid" do
@@ -74,9 +80,9 @@ RSpec.describe Api::V1::NotesController, type: :controller do
           expect(note.reload.file_url).not_to eq(last_file_url)
         end
 
-        it "return 404 status if note id is invalid" do
+        it "return forbidden error status if note id is invalid" do
           put :update, params: {id: 1111111, note: {body: 'After'}}
-          expect(response).to have_http_status(:not_found)
+          expect(response).to have_http_status(:forbidden)
         end
       end
 
@@ -85,6 +91,12 @@ RSpec.describe Api::V1::NotesController, type: :controller do
         it "user can destroy note" do
           delete :destroy, params: {id: note.id}
           expect(response).to have_http_status(:no_content)
+        end
+
+        it "user cannot delete notes for someone else" do
+          other_note = FactoryBot.create(:note)
+          delete :destroy, params: {id: other_note.id}
+          expect(response).to have_http_status(:forbidden)
         end
       end
     end
