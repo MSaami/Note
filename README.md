@@ -9,12 +9,15 @@ This is Note application that you can store your note on that, also you can atta
 - run `db:seed` to prepare data
 - run `rails server`
 
-###Note
-Active storage stores files in local driver, For changing driver to Amazon S3 you can change `development.rb` like below.
-```
+### Note
+Active storage stores files in local driver, For changing driver to Amazon S3 you can change `development.rb` like below.  
+
+```ruby
 31   config.active_storage.service = :amazon
+
 ```
-Since of sanctions I couldn't upload file into S3 and I used `fakes3` to simulate that situation.
+
+Since of sanctions I couldn't upload file into S3 and I used `fakes3` to simulate that situation.  
 Because of that the amazon's config in `storage.yml` is diffrent than usual.
 
 ## How to use Fakes3
@@ -23,31 +26,34 @@ Because of that the amazon's config in `storage.yml` is diffrent than usual.
 
 
 ## Credential
-`email`: `test@gmail.com`
+`email`: `test@gmail.com`  
 `password`: `123456`
 
 you can use this credential to calling api.
 
 ## Login API
 
-- With this api you can get JWT token for getting notes and folders, you have to set given token to headers as `Authorization` key .
-URI: `{host}/api/v1/sessions`
-Method: `POST`
-Body: 
-```
-"login": {
-    "email": "test@gmail.com"
+With this api you can get JWT token for getting notes and folders, you have to set given token to headers as `Authorization` key.  
+URI: `{host}/api/v1/sessions`  
+Method: `POST`  
+Body:   
+```json
+    "login": {
+        "email": "test@gmail.com"
         "password": "123456"
 }
 ```
-Success Response: `201`
-Success Response Body: 
-```
+Success Response: `201`  
+Success Response Body:
+
+```json
 "token": "JWT Token"
 ```
-Failed Response: `401`
-Failed Response Body: 
-```
+
+Failed Response: `401`  
+Failed Response Body:
+
+```json
 {
     "error": "Your credentials are invalid"
 }
@@ -55,24 +61,26 @@ Failed Response Body:
 
 ## Notes API
 
-**Create**
-URI: `{host}/api/v1/notes`
-Method: `POST`
-Body:
-Headers: `Authorization: Bearer <token>`
-```
+**Create**  
+URI: `{host}/api/v1/notes`  
+Method: `POST`  
+Headers: `Authorization: Bearer <token>`   
+Body:  
+
+```json
 {
     "note":{
         "body": "This is body of note"
             "folder_id": "5",
-            "file": "FILE
+            "file": "FILE"
     }
 }
 ```
-Success Response: `201`
-Validation Error Response: `422`
-Validation Error Response Body: 
-```
+Success Response: `201`  
+Validation Error Response: `422`  
+Validation Error Response Body:
+
+```json
 {
     "errors": {
         "body": [
@@ -82,50 +90,53 @@ Validation Error Response Body:
 }
 ```
 
-**Index**
-URI: `{host}/api/v1/notes`
-Method: `GET`
-Headers: `Authorization: Bearer <token>`
-Response Code: `200`
+**Index**  
+URI: `{host}/api/v1/notes`  
+Method: `GET`  
+Headers: `Authorization: Bearer <token>`  
+Response Code: `200`  
 
 **Update**
-URI: `{host}/api/v1/notes/{note_id}`
-Method: `PUT`
-Body:
-```
+URI: `{host}/api/v1/notes/{note_id}`  
+Method: `PUT`  
+Body:  
+
+```json
 {
     "note":{
         "body": "This is body of note"
             "folder_id": "5",
-            "file": "FILE
+            "file": "FILE"
     }
 }
 ```
-Success Response Code: `204`
+Success Response Code: `204`  
 
-**Destroy**
-URI: `{host}/api/v1/notes/{note_id}`
-Method: `Delete`
-Headers: `Authorization: Bearer <token>`
-Success Response Code: `204`
+**Destroy**  
+URI: `{host}/api/v1/notes/{note_id}`  
+Method: `Delete`  
+Headers: `Authorization: Bearer <token>`  
+Success Response Code: `204`  
 
 
 ## Folder API
 
-**Create**
-URI: `{host}/api/v1/folders`
-Method: `POST`
-Headers: `Authorization: Bearer <token>`
-Body: 
-```
+**Create**  
+URI: `{host}/api/v1/folders`  
+Method: `POST`  
+Headers: `Authorization: Bearer <token>`  
+Body:  
+
+```json
 "folder": {
-    "name: "Folder Name"
+    "name: "tech"
 }
 ```
-Success Response Code: `201`
-Validation Error Response: `422`
-Validation Error Response Body: 
-```
+Success Response Code: `201`  
+Validation Error Response: `422`  
+Validation Error Response Body:   
+
+```json
 {
     "errors": {
         "name": [
@@ -135,11 +146,11 @@ Validation Error Response Body:
 }
 ```
 
-**Index**
-URI: `{host}/api/v1/folders`
-Method: `GET`
-Headers: `Authorization: Bearer <token>`
-Success Response Code: `200`
+**Index**  
+URI: `{host}/api/v1/folders`  
+Method: `GET`  
+Headers: `Authorization: Bearer <token>`  
+Success Response Code: `200`  
 
 
 
