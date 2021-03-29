@@ -1,5 +1,4 @@
-module Api
-  module V1
+module Api::V1
     class SessionsController < BaseController
       skip_before_action :authenticate_user
 
@@ -17,4 +16,3 @@ module Api
       end
     end
   end
-end
